@@ -40,7 +40,7 @@ function load_test()
 {
 	console.log("Load test");
 	//var nodesText = ['test1', 'test2', 'test3', 'test4', 'test5', 'test6'];
-	var proj1 = new Project('SQL Database', 'Learn simple SQL', [1,2,3], [3,5], '', 3);
+	var proj1 = new Project('SQL Database', 'Learn simple SQL', [1,2,3], [3,5], 'https://github.com/John-Salame/Project-Source-Code', 3);
 	var proj2 = new Project('Java Battleship', 'Learn classes and inheritence while making the game "Battleship."', [4,5], [6], '', 2);
 	var proj3;
 	var proj4;
@@ -61,6 +61,8 @@ function create_card(project)
 
 		var card_body = document.createElement('div');
 		card_body.classList.add("card-body");
+		card_body.setAttribute('onclick', '#');
+		//later, this onclick will go to a more detailed page.
 
 		var card_title = document.createElement('h4');
 		card_title.classList.add("card-title");
@@ -78,10 +80,36 @@ function create_card(project)
 		interests.classList.add('card-text');
 		interests.innerHTML = "Interests: " + project.interests;
 
+		var matches = document.createElement('p');
+		matches.classList.add('card-text');
+		matches.innerHTML = "Search Result Matches: " + project.search_matches;
+
+
+		link_btn = document.createElement('a');
+		link_btn.classList.add('btn');
+		if(project.link == '')
+		{
+			link_btn.classList.add('btn-secondary');
+			//link_btn.setAttribute('href', '#'); //don't give href
+			link_btn.setAttribute('enabled', false);
+			link_btn.innerHTML = "No Link Provided";
+		}
+		else
+		{
+			link_btn.classList.add('btn-primary');
+			link_btn.setAttribute('href', project.link);
+			link_btn.setAttribute('target', '_blank');
+			link_btn.innerHTML = "Go to Project";
+		}
+
+
+		//consider putting card_title in a card-header instead
 		card_body.appendChild(card_title);
 		card_body.appendChild(description);
 		card_body.appendChild(skills);
 		card_body.appendChild(interests);
+		card_body.appendChild(matches);
+		card_body.appendChild(link_btn); //link button
 		card.appendChild(card_body);
 		return card;
 	}
