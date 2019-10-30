@@ -7,9 +7,35 @@
 
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+	 <!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
 </head>
 <body>
+
+	<!-- Common Elements -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+      <a class="nav-link" href="LandingPage.html">Home</a>
+      </li>
+      <li class="nav-item">
+      <a class="nav-link" href="search.html">Search<span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <div class="form-inline my-2 my-lg-0">
+      <a class="btn btn-link btn-outline-light my-2 my-sm-0" href="Login.html">Login</a>
+    </div>
+    <div class="form-inline my-2 my-lg-0">
+      <a class="btn btn-link btn-outline-light my-2 my-sm-0" href="Registration.html">Create Account</a>
+    </div>
+    </div>
+    </nav>
+    <!-- End Common Elements -->
 	
 	<div class="limiter">
 		<div class="container-login100">
@@ -32,9 +58,9 @@
 					</div>
 
 					<div class="container-login100-form-btn m-t-20">
-						<button class="login100-form-btn">
+						<a class="login100-form-btn" href="search.html">
 							Sign in
-						</button>
+						</a>
 					</div>
 
 					<div class="text-center p-t-45 p-b-4">
@@ -52,7 +78,7 @@
 							Create an account?
 						</span>
 
-						<a href="#" class="txt2 hov1">
+						<a href="Registration.html" class="txt2 hov1">
 							Sign up
 						</a>
 					</div>
