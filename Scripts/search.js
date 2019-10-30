@@ -2,7 +2,7 @@ console.log("Loaded search.js");
 
 
 //GLOBAL VARIABLES
-var NUM_COLS = 3;
+var NUM_COLS = 2;
 
 
 
@@ -13,10 +13,8 @@ var NUM_COLS = 3;
 function load_recommended(); //calls load_results with query results based on recommendations.
 function search(form_data); //uses form data and calls load_results with query results
 function load_results(query_results); //take in query, populate Project object, call populate_field.
-
 //Object to hold info about a project
 function Project(title, description, skills, interests, link);
-
 //the functions below are implemented:
 function load_template(project); //open a separate page
 function create_card(project); //for real program and for testing. Take in a project object.
@@ -74,7 +72,7 @@ function create_card(project)
 		card.classList.add('col');
 		card.classList.add('card');
 		//card.setAttribute('onclick', 'load_template(project)');
-		card.setAttribute('onclick', 'window.location.replace("../Pages/ProjectTemplate.html")');
+		card.setAttribute('onclick', "location.href='../Pages/ProjectTemplate.html'");
 		//later, this onclick will go to a more detailed page.
 
 		var header = document.createElement('div');
@@ -111,7 +109,7 @@ function create_card(project)
 
 		link_btn = document.createElement('a');
 		link_btn.classList.add('btn');
-		if(project.link == '')
+		/*if(project.link == '')
 		{
 			link_btn.classList.add('btn-secondary');
 			//link_btn.setAttribute('href', '#'); //don't give href
@@ -119,12 +117,12 @@ function create_card(project)
 			link_btn.innerHTML = "No Link Provided";
 		}
 		else
-		{
+		{*/
 			link_btn.classList.add('btn-primary');
-			link_btn.setAttribute('href', project.link);
-			link_btn.setAttribute('target', '_blank');
+			link_btn.setAttribute('href', "ProjectTemplate.html");
+			//link_btn.setAttribute('target', '_blank');
 			link_btn.innerHTML = "Go to Project";
-		}
+		//}
 
 
 		//consider putting card_title in a card-header instead
@@ -160,6 +158,8 @@ function populate_field(results)
 			if(row != undefined)
 			{
 				field.appendChild(row);
+				var br = document.createElement('br');
+				field.appendChild(br);
 			}
 			row = document.createElement('div');
 			row.classList.add('row');
@@ -185,3 +185,4 @@ function populate_field(results)
 	}
 
 } //end of populate
+
