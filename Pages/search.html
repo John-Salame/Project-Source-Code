@@ -19,8 +19,10 @@
 
 
 	<body onload="load_test()">
+
 		<div class="container" id="form-container">
-			<form method="GET" target="#" id="search-form">
+
+			<form method="GET" action="#" id="search-form">
 				<div class="form-row">
 					<div class="col">
 						<label for="search-bar"><h1>Search</h1></label>
@@ -28,6 +30,7 @@
 					</div>
 				</div>
 
+				<!-- Labels for checkbox regions -->
 				<div class="form-row" id="check-labels">
 					<div class="col">
 						<h3>Languages</h3>
@@ -40,24 +43,46 @@
 					</div>
 				</div>
 
-				<div class="form-row">
-					<div class="col form-check form-check-inline">
-						<input type="checkbox" class="form-check-input" value="1" name="skills" id="HTML">
-						<label for="HTML">HTML</label>
-					</div>
-
-					<div class="col form-check form-check-inline">
-						
-						<input type="checkbox" class="form-check form-check-input" value=13 name="skills">
-						<label for="skills" class="form-check-label">Skills</label>
-					</div>
-
+				<!-- Checkboxes for skills and interests -->
+				<div class="form-row" id="checkbox-row">
+					<!-- Languages -->
 					<div class="col">
-						<label for="interests">Interests</label>
+						<div class="form-check form-check-inline">
+							<input type="checkbox" class="form-check-input" value=1 name="skills" id="HTML">
+							<label for="HTML" class="form-check-label">HTML</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input type="checkbox" class="form-check-input" value=22 name="skills" id="Python">
+							<label for="Python" class="form-check-label">Python</label>
+						</div>
+					</div>
 
+					<!-- Skills -->
+					<div class="col">
+						<div class="form-check form-check-inline">
+							<input type="checkbox" class="form-check-input" value=13 name="skills" id="IOSDev">
+							<label for="IOSDev" class="form-check-label">IOS Dev</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input type="checkbox" class="form-check-input" value=25 name="skills" id="Algorithms">
+							<label for="Algorithms" class="form-check-label">Algorithms</label>
+						</div>
+					</div>
+
+					<!-- Interests -->
+					<div class="col">
+						<div class="form-check form-check-inline">
+							<input type="checkbox" class="form-check-input" value=3 name="interests" id="Databases">
+							<label for="Databases" class="form-check-label">Databases</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input type="checkbox" class="form-check-input" value=4 name="interests" id="Automation">
+							<label for="Automation" class="form-check-label">Automation</label>
+						</div>
 					</div>
 				</div>
 
+				<!-- Submit button -->
 				<div class="form-row">
 					<div class="col form-group">
 						<input type="submit" value="Submit">
@@ -69,7 +94,7 @@
 		<div class="container" id="card-container">
 			<div id="card-field">
 				<!-- This starts out blank -->
-				<h3>Your Results:</h3>
+				<h3>Your Results (Proof of concept):</h3>
 				<script>
 					console.log("Loaded card-field");
 				</script>
