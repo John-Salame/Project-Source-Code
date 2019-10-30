@@ -12,12 +12,13 @@ var NUM_COLS = 3;
 //these 3 functions are not implemented, and the arguments may not be final.
 function load_recommended(); //calls load_results with query results based on recommendations.
 function search(form_data); //uses form data and calls load_results with query results
-function load_results(query_results); //loads the suggestions / search results onto the screen.
+function load_results(query_results); //take in query, populate Project object, call populate_field.
 
 //Object to hold info about a project
 function Project(title, description, skills, interests, link);
 
 //the functions below are implemented:
+function load_template(project); //open a separate page
 function create_card(project); //for real program and for testing. Take in a project object.
 function load_test(); //for testing, populate a predefined set of project objects.
 function populate_field(results); //takes results as an array of project objects (for testing.
@@ -44,9 +45,23 @@ function load_test()
 	var proj2 = new Project('Java Battleship', 'Learn classes and inheritence while making the game "Battleship."', [4,5], [6], '', 2);
 	var proj3;
 	var proj4;
-	var projects = [proj1, proj2, proj3, proj4];
+	var projects = [proj1, proj2, proj3, proj1, proj2];
 	//populate_field(nodesText);
 	populate_field(projects);
+}
+
+
+function load_template(project)
+{
+	console.log("load_template");
+	//redirect to ProjectTemplate.html page
+	location.href('../Pages/ProjectTemplate.html');
+	var title = document.getElementById('project-title');
+	title.innerHTML = project.title;
+	var description = document.getElementById('project-description');
+	description.innerHTML = project.description;
+	var link = document.getElementById('project-link');
+	link.href = project.link;
 }
 
 
@@ -58,32 +73,41 @@ function create_card(project)
 		var card = document.createElement('div');
 		card.classList.add('col');
 		card.classList.add('card');
-
-		var card_body = document.createElement('div');
-		card_body.classList.add("card-body");
-		card_body.setAttribute('onclick', '#');
+		//card.setAttribute('onclick', 'load_template(project)');
+		card.setAttribute('onclick', 'window.location.replace("../Pages/ProjectTemplate.html")');
 		//later, this onclick will go to a more detailed page.
 
+		var header = document.createElement('div');
+		header.classList.add('card-header');
+
+		var card_body = document.createElement('div');
+		card_body.classList.add('card-body');
+
 		var card_title = document.createElement('h4');
-		card_title.classList.add("card-title");
+		card_title.classList.add('card-title');
 		card_title.innerHTML = project.title;
 
 		var description = document.createElement('h6');
 		description.classList.add('card-subtitle');
+		description.classList.add('mb-2'); //margin below
+		description.classList.add('text-secondary');
 		description.innerHTML = project.description;
 
-		var skills = document.createElement('p');
-		skills.classList.add('card-text');
+		var list_head = document.createElement('ul');
+		list_head.classList.add('list-group');
+		list_head.classList.add('list-group-flush');
+
+		var skills = document.createElement('li');
+		skills.classList.add('list-group-item');
 		skills.innerHTML = "Skills: " + project.skills;
 
-		var interests = document.createElement('p');
-		interests.classList.add('card-text');
+		var interests = document.createElement('li');
+		interests.classList.add('list-group-item');
 		interests.innerHTML = "Interests: " + project.interests;
 
-		var matches = document.createElement('p');
-		matches.classList.add('card-text');
+		var matches = document.createElement('li');
+		matches.classList.add('list-group-item');
 		matches.innerHTML = "Search Result Matches: " + project.search_matches;
-
 
 		link_btn = document.createElement('a');
 		link_btn.classList.add('btn');
@@ -104,13 +128,18 @@ function create_card(project)
 
 
 		//consider putting card_title in a card-header instead
-		card_body.appendChild(card_title);
-		card_body.appendChild(description);
-		card_body.appendChild(skills);
-		card_body.appendChild(interests);
-		card_body.appendChild(matches);
-		card_body.appendChild(link_btn); //link button
-		card.appendChild(card_body);
+		header.appendChild(card_title);
+		header.appendChild(description);
+
+		list_head.appendChild(skills);
+		list_head.appendChild(interests);
+		list_head.appendChild(matches);
+		list_head.appendChild(link_btn); //link button
+
+		//card_body.appendChild(list_head);
+		card.appendChild(header);
+		card.appendChild(list_head);
+		//card.appendChild(card_body);
 		return card;
 	}
 }
