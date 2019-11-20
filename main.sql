@@ -5,7 +5,7 @@ create database main;
 CREATE TABLE IF NOT EXISTS user_details(
 	id SERIAL PRIMARY KEY, /* Unique identifer for each user */
 	name VARCHAR(100) NOT NULL,
-	password VARCHAR(100), NOT NULL,
+	password VARCHAR(100) NOT NULL,
 	skills INT[], /* 1-30 choices */
 	interests INT[] /* 1-12 choices */
 );
@@ -37,7 +37,7 @@ VALUES('HTML'),('CSS'),('Database'),('HTTP Server'),('API Access'),
 CREATE TABLE IF NOT EXISTS project_traits(
 	id SERIAL PRIMARY KEY, /* Unique identifer for each project */
 	title VARCHAR(100) NOT NULL,
-	description VARCHAR(1000) NOT NULL,
+	description VARCHAR(10000) NOT NULL,
 	skills INT[], /* 1-30 choices */
 	interests INT[], /* 1-12 choices */
 	link VARCHAR(1000)
