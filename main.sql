@@ -5,7 +5,7 @@ create database main;
 CREATE TABLE IF NOT EXISTS user_details(
 	id SERIAL PRIMARY KEY, /* Unique identifer for each user */
 	name VARCHAR(100) NOT NULL,
-	password VARCHAR(100), NOT NULL,
+	password VARCHAR(100) NOT NULL,
 	skills INT[], /* 1-30 choices */
 	interests INT[] /* 1-12 choices */
 );
@@ -25,7 +25,7 @@ id SERIAL PRIMARY KEY,
 skill VARCHAR(50)
 );
 
-INSERT INTO skills(name)
+INSERT INTO skill(name)
 VALUES('HTML'),('CSS'),('Database'),('HTTP Server'),('API Access'),
 ('Oauth'),('Error Handling'),('JavaScript'),('SQL'),('Swift'),('Kivy'),('IOS Dev'),
 ('Android Dev'),('Systems'),('Password Cracking'),('Kali Linux'),('SQL Injection'),
