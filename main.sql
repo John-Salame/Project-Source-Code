@@ -25,7 +25,7 @@ id SERIAL PRIMARY KEY,
 skill VARCHAR(50)
 );
 
-INSERT INTO skills(name)
+INSERT INTO skills(skill)
 VALUES('HTML'),('CSS'),('Database'),('HTTP Server'),('API Access'),
 ('Oauth'),('Error Handling'),('JavaScript'),('SQL'),('Swift'),('Kivy'),('IOS Dev'),
 ('Android Dev'),('Systems'),('Password Cracking'),('Kali Linux'),('SQL Injection'),
