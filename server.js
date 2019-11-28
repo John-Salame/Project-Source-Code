@@ -1,3 +1,6 @@
+//possible tutorial?
+//https://medium.com/@bhanushali.mahesh3/creating-a-simple-website-with-node-js-express-and-ejs-view-engine-856382a4578f
+
 /*REQUIRES THE FOLLOWING COMMANDS
 npm install ejs
 npm install express
@@ -35,10 +38,48 @@ const dbConfig = {
 	database: 'main',
 	user: 'postgres',
 	//EITHER UPDATE THIS LINE OR FOLLOW INSTRUCTIONS AT THE TOP
-	password: 'projectsource'
+	password: 'postgresJohn'
 };
 
 let db = pgp(dbConfig);
+
+app.use(express.static(__dirname + '/')); //added by John
+
+app.get('/', function(req, res) {
+	res.render('LandingPage',{ 
+		my_title:"Landing Page"
+	});
+});
+
+app.get('/login', function(req, res) {
+	res.render('Login',{
+		my_title:"Login Page"
+	});
+});
+
+app.get('/info', function(req, res) {
+	res.render('ProjectTemplate',{
+		my_title:"More Info"
+	});
+});
+
+app.get('/register', function(req, res) {
+	res.render('Registration',{
+		my_title:"Register"
+	});
+});
+
+app.get('/add_project', function(req, res) {
+	res.render('userAdd',{
+		my_title:"Add Project"
+	});
+});
+
+app.get('/search', function(req, res) {
+	res.render('search',{
+		my_title:"Search Page"
+	});
+});
 
 
 app.listen(3000);
