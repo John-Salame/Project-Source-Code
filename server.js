@@ -60,9 +60,22 @@ app.get('/login', function(req, res) {
 app.get('/info', function(req, res) {
 	var projid = req.query.projid;
 	console.log("Project template id: " + projid);
-	res.render('ProjectTemplate',{
-		my_title:"More Info"
-	});
+	var query = "SELECT * FROM project_traits WHERE id = " + parseInt(projid) + ";";
+	db.any(query)
+		.then(function(rows) {
+			console.log(rows);
+			res.render('ProjectTemplate',{
+				my_title:"More Info",
+				data: rows[0]
+			});
+		})
+		.catch(function(err) {
+			console.log("You paged directly to here or project id does not exist.");
+			res.render('ProjectTemplate',{
+				my_title:"More Info",
+				data: undefined
+			});
+		});
 });
 
 app.get('/register', function(req, res) {

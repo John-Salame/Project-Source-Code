@@ -73,7 +73,7 @@ function create_card(project)
 	if(project != null && project != undefined)
 	{
 		var card_form = document.createElement('form');
-		card_form.setAttribute('action', 'info');
+		card_form.setAttribute('action', '/info');
 		card_form.setAttribute('method', 'GET');
 
 		var card = document.createElement('div');
