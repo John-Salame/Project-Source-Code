@@ -58,6 +58,8 @@ app.get('/login', function(req, res) {
 });
 
 app.get('/info', function(req, res) {
+	var projid = req.query.projid;
+	console.log("Project template id: " + projid);
 	res.render('ProjectTemplate',{
 		my_title:"More Info"
 	});
