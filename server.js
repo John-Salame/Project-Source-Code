@@ -79,7 +79,18 @@ app.get('/add_project', function(req, res) {
 
 app.get('/search', function(req, res) {
 	res.render('search',{
-		my_title:"Search Page"
+		my_title:"Search Page",
+		numResults: 0
+	});
+});
+
+//searching and result displaying will happen here.
+app.post('/search/results', function(req, res) {
+	var numr = 4; //number of results
+	console.log(numr);
+	res.render('search',{
+		my_title:"Search Page",
+		numResults: numr
 	});
 });
 

@@ -36,11 +36,14 @@ function Project(id, title, description, skills, interests, link, search_matches
 }
 
 
+//INSERT INTO project_traits(title, description, skills, interests, link) 
+//VALUES('SQL Database', 'Learn simple SQL', 
+//ARRAY [3, 9], ARRAY [3, 12], 'https://github.com/John-Salame/Project-Source-Code');
 function load_test()
 {
 	console.log("Load test");
 	//var nodesText = ['test1', 'test2', 'test3', 'test4', 'test5', 'test6'];
-	var proj1 = new Project(0, 'SQL Database', 'Learn simple SQL', [1,2,3], [3,5], 'https://github.com/John-Salame/Project-Source-Code', 3);
+	var proj1 = new Project(0, 'SQL Database', 'Learn simple SQL', ['Database', 'SQL'], ['Databases', 'Data Science'], 'https://github.com/John-Salame/Project-Source-Code', 3);
 	var proj2 = new Project(1, 'Java Battleship', 'Learn classes and inheritence while making the game "Battleship."', [4,5], [6], '', 2);
 	var proj3;
 	var proj4;
