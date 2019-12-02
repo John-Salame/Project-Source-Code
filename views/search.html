@@ -20,10 +20,10 @@
 	</header>
 
 
-	<body onload='load_test()'>
+	<body>
 
 		<% if (numResults > 0) { %>
-	    	<% load_test(); %>
+	    	<% searchjs.load_test(documentElement); %>
 		<% } %>
 
 		<!-- Common Elements -->
@@ -55,7 +55,7 @@
 
 		<div class="container" id="form-container">
 
-			<form method="POST" action="/search/results" id="search-form">
+			<form method="GET" action="/search/results" id="search-form">
 				<div class="form-row">
 					<div class="col">
 						<label for="search-bar"><h1>Search</h1></label>

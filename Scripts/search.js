@@ -1,5 +1,7 @@
 console.log("Loaded search.js");
 
+//https://stackoverflow.com/questions/54516373/how-to-call-javascript-functions-of-external-files-from-ejs-template
+exports = module.exports = {};
 
 //GLOBAL VARIABLES
 var NUM_COLS = 2;
@@ -39,7 +41,7 @@ function Project(id, title, description, skills, interests, link, search_matches
 //INSERT INTO project_traits(title, description, skills, interests, link) 
 //VALUES('SQL Database', 'Learn simple SQL', 
 //ARRAY [3, 9], ARRAY [3, 12], 'https://github.com/John-Salame/Project-Source-Code');
-function load_test()
+function load_test(document)
 {
 	console.log("Load test");
 	//var nodesText = ['test1', 'test2', 'test3', 'test4', 'test5', 'test6'];
@@ -49,7 +51,12 @@ function load_test()
 	var proj4;
 	var projects = [proj1, proj2, proj3, proj1, proj2];
 	//populate_field(nodesText);
-	populate_field(projects);
+	populate_field(document, projects);
+}
+
+exports.load_test = function(document)
+{
+	load_test(document);
 }
 
 
@@ -67,7 +74,7 @@ function load_template(project)
 }
 
 
-function create_card(project)
+function create_card(document, project)
 {
 	console.log("Create card");
 	if(project != null && project != undefined)
@@ -164,7 +171,7 @@ function create_card(project)
 }
 
 
-function populate_field(results)
+function populate_field(document, results)
 {
 	console.log("Populate field");
 	var field = document.getElementById('card-field');
@@ -186,7 +193,7 @@ function populate_field(results)
 			row.classList.add('row');
 		}
 
-		card = create_card(results[i]); //create card
+		card = create_card(document, results[i]); //create card
 
 		if(card != null && card != undefined)
 		{

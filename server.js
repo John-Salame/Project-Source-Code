@@ -57,6 +57,7 @@ app.get('/login', function(req, res) {
 	});
 });
 
+//projid is the id of the project for the card you clicked to reach here.
 app.get('/info', function(req, res) {
 	var projid = req.query.projid;
 	console.log("Project template id: " + projid);
@@ -98,10 +99,14 @@ app.get('/search', function(req, res) {
 });
 
 //searching and result displaying will happen here.
-app.post('/search/results', function(req, res) {
+app.get('/search/results', function(req, res) {
 	var numr = 4; //number of results
 	console.log(numr);
+	console.log(req.query.skills);
+	console.log(req.query.interests);
+	var funs = require('./Scripts/search.js');
 	res.render('search',{
+		searchjs: funs,
 		my_title:"Search Page",
 		numResults: numr
 	});
