@@ -1,7 +1,7 @@
 console.log("Loaded search.js");
 
 //https://stackoverflow.com/questions/54516373/how-to-call-javascript-functions-of-external-files-from-ejs-template
-exports = module.exports = {};
+//exports = module.exports = {};
 
 //GLOBAL VARIABLES
 var NUM_COLS = 2;
@@ -41,23 +41,25 @@ function Project(id, title, description, skills, interests, link, search_matches
 //INSERT INTO project_traits(title, description, skills, interests, link) 
 //VALUES('SQL Database', 'Learn simple SQL', 
 //ARRAY [3, 9], ARRAY [3, 12], 'https://github.com/John-Salame/Project-Source-Code');
-function load_test(document)
+function load_test()
 {
 	console.log("Load test");
 	//var nodesText = ['test1', 'test2', 'test3', 'test4', 'test5', 'test6'];
-	var proj1 = new Project(0, 'SQL Database', 'Learn simple SQL', ['Database', 'SQL'], ['Databases', 'Data Science'], 'https://github.com/John-Salame/Project-Source-Code', 3);
-	var proj2 = new Project(1, 'Java Battleship', 'Learn classes and inheritence while making the game "Battleship."', [4,5], [6], '', 2);
+	var proj1 = new Project(1, 'SQL Database', 'Learn simple SQL', ['Database 3', 'SQL 9'], ['Databases', 'Data Science'], 'https://github.com/John-Salame/Project-Source-Code', 3);
+	var proj2 = new Project(2, 'Password Cracking', 'Use Python to automate password cracking in an SQL server.', ['SQL 9', 'Password Cracking 15', 'Python 20'], ['Ethical Hacking 9'], '', 2);
 	var proj3;
 	var proj4;
 	var projects = [proj1, proj2, proj3, proj1, proj2];
 	//populate_field(nodesText);
-	populate_field(document, projects);
+	populate_field(projects);
 }
 
-exports.load_test = function(document)
+/*
+exports.load_test = function()
 {
-	load_test(document);
+	load_test();
 }
+*/
 
 
 function load_template(project)
@@ -74,7 +76,7 @@ function load_template(project)
 }
 
 
-function create_card(document, project)
+function create_card(project)
 {
 	console.log("Create card");
 	if(project != null && project != undefined)
@@ -171,7 +173,7 @@ function create_card(document, project)
 }
 
 
-function populate_field(document, results)
+function populate_field(results)
 {
 	console.log("Populate field");
 	var field = document.getElementById('card-field');
@@ -193,7 +195,7 @@ function populate_field(document, results)
 			row.classList.add('row');
 		}
 
-		card = create_card(document, results[i]); //create card
+		card = create_card(results[i]); //create card
 
 		if(card != null && card != undefined)
 		{

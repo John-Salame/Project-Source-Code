@@ -10,6 +10,34 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   </head>
   <body>
+
+      <!-- Common Elements -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+      <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+      <a class="nav-link" href="/search">Search<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+      <a class="nav-link" href="/add_project">Submit a Project<span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <div class="form-inline my-2 my-lg-0">
+      <a class="btn btn-link btn-outline-light my-2 my-sm-0" href="/login">Login</a>
+    </div>
+    <div class="form-inline my-2 my-lg-0">
+      <a class="btn btn-link btn-outline-light my-2 my-sm-0" href="/register">Create Account</a>
+    </div>
+    </div>
+    </nav>
+    <!-- End Common Elements -->
+
     <form>
       <div class="form-group">
         <label for="usr">Project Title:</label>
