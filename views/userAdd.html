@@ -1,51 +1,24 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
+  <header>
     <title>Add A Project</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  </head>
+  </header>
   <body>
-
-      <!-- Common Elements -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-      <a class="nav-link" href="/">Home</a>
-      </li>
-      <li class="nav-item">
-      <a class="nav-link" href="/search">Search<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-      <a class="nav-link" href="/add_project">Submit a Project<span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
-    <div class="form-inline my-2 my-lg-0">
-      <a class="btn btn-link btn-outline-light my-2 my-sm-0" href="/login">Login</a>
-    </div>
-    <div class="form-inline my-2 my-lg-0">
-      <a class="btn btn-link btn-outline-light my-2 my-sm-0" href="/register">Create Account</a>
-    </div>
-    </div>
-    </nav>
-    <!-- End Common Elements -->
-
-    <form>
+    <script type="text/javascript" src="../Scripts/userAdd.js"></script>
+    <form method="GET" action="/add_project/submit" id="add-form">
       <div class="form-group">
         <label for="usr">Project Title:</label>
-        <input type="text" class="form-control" id="title" placeholder="Title">
+        <input type="text" class="form-control" name="title" id="title" placeholder="Title">
       </div>
       <div class="form-group">
         <label for="exampleFormControlTextarea1">Project Description:</label>
-        <textarea class="form-control" id="description" rows="5"></textarea>
+        <textarea class="form-control" id="description" name="description" rows="5"></textarea>
       </div>
       <div class="row">
         <label for="sel1">&nbsp;&nbsp;&nbsp;&nbsp;Skills Required:</label>
@@ -240,20 +213,21 @@
 
       <div class="form-group">
         <label for="usr">Link to Source Code(Optional):</label>
-        <input type="text" class="form-control" id="usr" placeholder="Link">
+        <input type="text" class="form-control" name="link" placeholder="Link">
       </div>
 
         <label for="sel1">Login to finish submission:</label>
         <div class="form-row">
           <div class="col">
-            <input type="text" class="form-control" placeholder="Username or Email">
+            <input type="text" class="form-control" id="user" name="user" placeholder="Username or Email">
           </div>
           <div class="col">
-            <input type="text" class="form-control" placeholder="Password">
+            <input type="text" class="form-control" id="password" name="password" placeholder="Password">
           </div>
         </div>
         <div class="well" style="min-height: 15px;"></div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <input type="button" value="Submit" onclick="checkValid()"/>
     </form>
+  <script type="text/javascript" src="../Scripts/userAdd.js"></script>
   </body>
 </html>
