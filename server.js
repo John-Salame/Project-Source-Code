@@ -40,7 +40,7 @@ const dbConfig = {
 	database: 'main',
 	user: 'postgres',
 	//EITHER UPDATE THIS LINE OR FOLLOW INSTRUCTIONS AT THE TOP
-	password: 'postgresJohn'//'projectsource'
+	password: 'projectsource'
 };
 
 let db = pgp(dbConfig);
