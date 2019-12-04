@@ -40,7 +40,7 @@ const dbConfig = {
 	database: 'main',
 	user: 'postgres',
 	//EITHER UPDATE THIS LINE OR FOLLOW INSTRUCTIONS AT THE TOP
-	password: 'projectsource'
+	password: 'postgresJohn'//'projectsource'
 };
 
 let db = pgp(dbConfig);
@@ -91,6 +91,7 @@ app.get('/register', function(req, res) {
 app.get('/search', function(req, res) {
 	res.render('search',{
 		my_title:"Search Page",
+		results: undefined,
 		numResults: 0
 	});
 });
@@ -98,16 +99,27 @@ app.get('/search', function(req, res) {
 
 //searching and result displaying will happen here.
 app.get('/search/results', function(req, res) {
-	var numr = 4; //number of results
-	console.log(numr);
 	console.log(req.query.skills);
 	console.log(req.query.interests);
+	var query = 'SELECT * FROM project_traits;';
 	var funs = require('./Scripts/search.js');
-	res.render('search',{
-		searchjs: funs,
-		my_title:"Search Page",
-		numResults: numr
-	});
+	db.any(query)
+		.then(function(rows) {
+	        res.render('search',{
+	                searchjs: funs,
+	                my_title:"Search Page",
+	                results: rows,
+	                numResults: rows.length
+	        });
+	    })
+	   .catch(function(err) {
+	        res.render('search',{
+	                searchjs: funs,
+	                my_title: "Search Page",
+	                results: undefined,
+	                numResults: 0
+	        });
+	    });
 });
 
 app.get('/add_project', function(req, res) {
