@@ -58,22 +58,43 @@ app.get('/login', function(req, res) {
 		my_title:"Login Page"
 	});
 });
+app.get('/login/submit', function(req, res) {
+	var email=req.query.email;
+	var password=req.query.pass;
+
+	var check="Select * FROM user_details WHERE (name = '"+email+"' AND password ='"+password+"');";	
+
+	db.any(check)
+		.then(function(rows) {
+			if (rows.length==1){
+				res.render('LandingPage',{
+					my_title:"SUCSESS!"
+			});
+			}
+			else{
+				res.render('Login',{
+			});
+			}
+			
+		})
+});
 
 //projid is the id of the project for the card you clicked to reach here.
 app.get('/info', function(req, res) {
 	var projid = req.query.projid;
-	console.log("Project template id: " + projid);
-	var query = "SELECT * FROM project_traits WHERE id = " + parseInt(projid) + ";";
+	//console.log("Project template id: " + projid);
+	var query = "SELECT project_traits.id, project_traits.title, project_traits.link, project_traits.description,(SELECT ARRAY(SELECT skill FROM SKILLS WHERE id IN(  (SELECT UNNEST(skills) FROM project_traits where id ="+ projid +")))) AS skills, (SELECT ARRAY(SELECT interests FROM interests WHERE id IN(SELECT UNNEST(interests) FROM project_traits where id = " + projid + "))AS interests) FROM project_traits WHERE id= "+ projid + ";";
+	//console.log(query);
 	db.any(query)
 		.then(function(rows) {
-			console.log(rows);
+			//console.log(rows);
 			res.render('ProjectTemplate',{
 				my_title:"More Info",
 				data: rows[0]
 			});
 		})
 		.catch(function(err) {
-			console.log("You paged directly to here or project id does not exist.");
+			//console.log("You paged directly to here or project id does not exist.");
 			res.render('ProjectTemplate',{
 				my_title:"More Info",
 				data: undefined
@@ -99,16 +120,20 @@ app.get('/search', function(req, res) {
 
 //searching and result displaying will happen here.
 app.get('/search/results', function(req, res) {
-	console.log(req.query.skills);
-	console.log(req.query.interests);
-	var query = 'SELECT * FROM project_traits;';
+	//console.log(req.query.skills);
+	//console.log(req.query.interests);
+	var term = req.query.search_term;
+	console.log(req.query.search_term);
+	console.log(term);
+	var query = "SELECT project_traits.id, project_traits.title, project_traits.description, (SELECT ARRAY(SELECT skill FROM SKILLS WHERE id IN(  (SELECT UNNEST(skills) FROM project_traits where id = (SELECT id FROM project_traits WHERE title = '"+ term + "'))))) AS skills, (SELECT ARRAY(SELECT interests FROM interests WHERE id IN( SELECT UNNEST(interests) FROM project_traits where id = (SELECT id FROM project_traits WHERE title = '"+ term + "')))) FROM project_traits WHERE id= (SELECT id FROM project_traits WHERE title = '"+ term + "');";
 	var funs = require('./Scripts/search.js');
 	db.any(query)
 		.then(function(rows) {
+			//console.log(rows);
 	        res.render('search',{
 	                searchjs: funs,
 	                my_title:"Search Page",
-	                results: rows,
+	                results: rows[0],
 	                numResults: rows.length
 	        });
 	    })
