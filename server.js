@@ -58,6 +58,26 @@ app.get('/login', function(req, res) {
 		my_title:"Login Page"
 	});
 });
+app.get('/login/submit', function(req, res) {
+	var email=req.query.email;
+	var password=req.query.pass;
+
+	var check="Select * FROM user_details WHERE (name = '"+email+"' AND password ='"+password+"');";	
+
+	db.any(check)
+		.then(function(rows) {
+			if (rows.length==1){
+				res.render('LandingPage',{
+					my_title:"SUCSESS!"
+			});
+			}
+			else{
+				res.render('Login',{
+			});
+			}
+			
+		})
+});
 
 //projid is the id of the project for the card you clicked to reach here.
 app.get('/info', function(req, res) {
