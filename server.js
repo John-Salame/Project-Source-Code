@@ -125,7 +125,7 @@ app.get('/search/results', function(req, res) {
 	var term = req.query.search_term;
 	//console.log(req.query.search_term);
 	//console.log(term);
-	console.log(req.query);
+	//console.log(req.query);
 
 	/*NEED TO GUARANTEE THAT SKILLS/INTERESTS IS OF TYPE ARRAY*/
 	if(req.query.skills){
@@ -134,7 +134,7 @@ app.get('/search/results', function(req, res) {
 		for (var i = 0; i<skills.length;i++){
 			skills[i] = parseInt(skills[i]);
 		}
-		console.log(skills);
+		//console.log(skills);
 	}
 	if(req.query.interests){
 		var interests =[].concat(req.query.interests);
@@ -142,7 +142,7 @@ app.get('/search/results', function(req, res) {
 		for (var i = 0; i<interests.length;i++){
 			interests[i] = parseInt(interests[i]);
 		}
-		console.log(interests);
+		//console.log(interests);
 	}
 
 	//TEMP
@@ -153,14 +153,33 @@ app.get('/search/results', function(req, res) {
 						WHERE LOWER('${term}') = LOWER(title)
 						AND ARRAY${skills} = skills
 						AND ARRAY${interests} = interests;`;
+
+	var match_title = `SELECT id FROM project_traits
+	WHERE LOWER('${term}') = LOWER(title);`;
 	
 
 
 	//Need to figure out db tasks to chain queries
 	var funs = require('./Scripts/search.js');
-	db.any(query)
+	db.task('get-everything', task =>{
+		return task.any(match_title)
+			.then(pid => {
+				console.log("I'm here right");
+				console.log(task);
+				console.log("pid");
+				console.log(pid[0]);
+				var renderQuery = `SELECT project_traits.id, project_traits.title, project_traits.link, project_traits.description,
+				(SELECT ARRAY(SELECT skill FROM SKILLS WHERE id IN(  (SELECT UNNEST(skills)
+				FROM project_traits where id =${pid[0].id})))) AS skills, 
+				(SELECT ARRAY(SELECT interests FROM interests WHERE id IN(SELECT UNNEST(interests)
+				FROM project_traits where id =${pid[0].id}))AS interests)
+				FROM project_traits WHERE id=${pid[0].id};`;
+				return task.any(renderQuery);
+			});
+	})
 		.then(function(rows) {
-			//console.log(rows);
+			console.log("rows");
+			console.log(rows);
 	        res.render('search',{
 	                searchjs: funs,
 	                my_title:"Search Page",
@@ -169,6 +188,7 @@ app.get('/search/results', function(req, res) {
 	        });
 	    })
 	   .catch(function(err) {
+	   		console.log("error");
 	        res.render('search',{
 	                searchjs: funs,
 	                my_title: "Search Page",
@@ -177,6 +197,9 @@ app.get('/search/results', function(req, res) {
 	        });
 	    });
 });
+
+
+
 
 app.get('/add_project', function(req, res) {
 	var title=req.query.title;
