@@ -148,20 +148,20 @@
 				 if(results != undefined) { %>
 					<h3>Your Results:</h3>
 					<br>
-					<% for(var i = 0; i < 1; i++) { %>
-						<% var project = results %>
+					<% for(var i = 0; i < results.length; i++) { %>
+						<% var project = results[i][0] %>
 						<form action="/info" method="get" id='card_<%=i%>'>
 							<div class="card">
 								<h3 class="card-header">
-									Project ID: <%= project.title %>
-									<input type="text" name="projid" value='<%=results.id%>' readonly hidden>
+									Project ID: <%= project.id %>
+									<input type="text" name="projid" value='<%=project.id%>' readonly hidden>
 								</h3>
 								<div class="card-body">
 									<h4 class="card-title">
 										<%= project.title %>
 									</h4>
 									<h6 class="card-subtitle mb-2 text-secondary">
-										<%= project.description %>
+										<%= project.description.slice(0,256) %>
 									</h6>
 								</div>
 								<ul class="list-group list-group-flush">
