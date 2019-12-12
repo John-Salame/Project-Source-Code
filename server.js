@@ -7,8 +7,6 @@ npm install express
 npm install request
 npm install pg-promise
 nmp install jsdom
-
-
 EITHER UPDATE password field in dbConfig or follow these instructions to update your psql password
 sudo -u postgres psql
 /password
@@ -153,7 +151,7 @@ app.get('/search/results', function(req, res) {
 		for (var i = 0; i<skills.length;i++){
 			skills[i] = parseInt(skills[i]);
 		}
-		//console.log(skills);
+		console.log(skills);
 	}
 	if(req.query.interests){
 		var interests =[].concat(req.query.interests);
@@ -161,39 +159,98 @@ app.get('/search/results', function(req, res) {
 		for (var i = 0; i<interests.length;i++){
 			interests[i] = parseInt(interests[i]);
 		}
-		//console.log(interests);
+		console.log(interests);
 	}
 
 	//TEMP
 	var query = "select * from project_traits;";
 
 	//REAL
-	var exact_match = `SELECT id FROM project_traits
-						WHERE LOWER('${term}') = LOWER(title)
-						AND ARRAY${skills} = skills
-						AND ARRAY${interests} = interests;`;
+	if(term != '')
+	{
+		var exactTitle = `SELECT id FROM project_traits
+		WHERE LOWER('${term}') = LOWER(title);`;
 
-	var match_title = `SELECT id FROM project_traits
-	WHERE LOWER('${term}') = LOWER(title);`;
+		var exactInDescription = `SELECT id FROM project_traits
+		WHERE description ILIKE '%${term}%'`;
 
+		var termInTitle = `SELECT id FROM project_traits
+		WHERE string_to_array(LOWER(${term}), ' ') <@ string_to_array(LOWER(title), ' ');`;
 
+		var titleInTerm = `SELECT id FROM project_traits
+		WHERE string_to_array(LOWER(${term}), ' ') @> string_to_array(LOWER(title), ' ');`;
+
+		var termInDescription = `SELECT id FROM project_traits
+		WHERE string_to_array(LOWER(${term}), ' ') <@ string_to_array(LOWER(description), ' ');`;
+	}
+
+	if(skills){
+		var exactSkills = `SELECT id FROM project_traits
+		WHERE ARRAY[${skills}] = skills;`;
+
+		var skillsInProject = `SELECT id FROM project_traits
+		WHERE ARRAY[${skills}] <@ skills;`;
+
+		var projectInSkills = `SELECT id FROM project_traits
+		WHERE ARRAY[${skills}] @> skills;`;
+	}
+
+	if(interests){
+		var exactInterests = `SELECT id FROM project_traits
+		WHERE ARRAY[${interests}] = interests;`
+
+		var interestsInProject = `SELECT id FROM project_traits
+		WHERE ARRAY[${interests}] <@ interests;`;
+
+		var projectInInterests = `SELECT id FROM project_traits
+		WHERE ARRAY[${interests}] @> interests;`;
+	}
 
 	//Need to figure out db tasks to chain queries
 	var funs = require('./Scripts/search.js');
 	db.task('get-everything', task =>{
-		return task.any(match_title)
+		var taskArray = [];
+		if(term != ''){
+			taskArray.push(task.any(exactTitle));
+			taskArray.push(task.any(exactInDescription));
+		}
+		if(skills){
+			taskArray.push(task.any(exactSkills));
+			taskArray.push(task.any(skillsInProject));
+			taskArray.push(task.any(projectInSkills));
+		}
+		if(interests){
+			taskArray.push(task.any(exactInterests));
+			taskArray.push(task.any(interestsInProject));
+			taskArray.push(task.any(projectInInterests));
+		}
+		console.log(taskArray);
+		return task.batch(taskArray)
 			.then(pid => {
-				console.log("I'm here right");
-				console.log(task);
-				console.log("pid");
-				console.log(pid[0]);
-				var renderQuery = `SELECT project_traits.id, project_traits.title, project_traits.link, project_traits.description,
-				(SELECT ARRAY(SELECT skill FROM SKILLS WHERE id IN(  (SELECT UNNEST(skills)
-				FROM project_traits where id =${pid[0].id})))) AS skills,
-				(SELECT ARRAY(SELECT interests FROM interests WHERE id IN(SELECT UNNEST(interests)
-				FROM project_traits where id =${pid[0].id}))AS interests)
-				FROM project_traits WHERE id=${pid[0].id};`;
-				return task.any(renderQuery);
+				var idArray = [];
+				var returnArray = [];
+				console.log(pid);
+				for(var i = 0; i < pid.length; i++)
+				{
+					//console.log(pid[i].length);
+					for(j = 0; j < pid[i].length; j++){
+						console.log(pid[i][j].id);
+						if(idArray.indexOf(pid[i][j].id) == -1){
+							idArray.push(pid[i][j].id);
+						}
+					}
+
+				}
+				for(var i = 0; i < idArray.length; i++){
+					var renderQuery = `SELECT project_traits.id, project_traits.title, project_traits.link, project_traits.description,
+					(SELECT ARRAY(SELECT skill FROM SKILLS WHERE id IN(  (SELECT UNNEST(skills)
+					FROM project_traits where id =${idArray[i]})))) AS skills, 
+					(SELECT ARRAY(SELECT interests FROM interests WHERE id IN(SELECT UNNEST(interests)
+					FROM project_traits where id =${idArray[i]}))AS interests)
+					FROM project_traits WHERE id=${idArray[i]};`;
+					returnArray.push(task.any(renderQuery));
+				}
+				return task.batch(returnArray);
 			});
 	})
 		.then(function(rows) {
@@ -202,12 +259,13 @@ app.get('/search/results', function(req, res) {
 	        res.render('search',{
 	                searchjs: funs,
 	                my_title:"Search Page",
-	                results: rows[0],
+	                results: rows,
 	                numResults: rows.length
 	        });
 	    })
 	   .catch(function(err) {
 	   		console.log("error");
+	   		console.log(err);
 	        res.render('search',{
 	                searchjs: funs,
 	                my_title: "Search Page",
