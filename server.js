@@ -62,7 +62,7 @@ app.get('/login/submit', function(req, res) {
 	var email=req.query.email;
 	var password=req.query.pass;
 
-	var check="Select * FROM user_details WHERE (name = '"+email+"' AND password ='"+password+"');";	
+	var check="Select * FROM user_details WHERE (name = '"+email+"' AND password ='"+password+"');";
 
 	db.any(check)
 		.then(function(rows) {
@@ -75,7 +75,7 @@ app.get('/login/submit', function(req, res) {
 				res.render('Login',{
 			});
 			}
-			
+
 		})
 });
 
@@ -106,6 +106,25 @@ app.get('/register', function(req, res) {
 	res.render('Registration',{
 		my_title:"Register"
 	});
+})
+app.get('/register/submit', function(req, res) {
+	var name=req.query.email;
+	var pass=req.query.pass;
+	var insert_statement = "INSERT INTO user_details(name,password) VALUES('"+name+"','"+pass+"');";
+
+	db.any(insert_statement)
+				.then(function (rows) {
+						res.render('LandingPage',{
+				my_title: "Submitted",
+			})
+				})
+				.catch(function (err) {
+						// display error message in case an error
+						console.log('error', err); //if this doesn't work for you replace with console.log
+						res.render('Registration', {
+								title: 'Failed Registration',
+						})
+				})
 })
 
 
@@ -156,7 +175,7 @@ app.get('/search/results', function(req, res) {
 
 	var match_title = `SELECT id FROM project_traits
 	WHERE LOWER('${term}') = LOWER(title);`;
-	
+
 
 
 	//Need to figure out db tasks to chain queries
@@ -170,7 +189,7 @@ app.get('/search/results', function(req, res) {
 				console.log(pid[0]);
 				var renderQuery = `SELECT project_traits.id, project_traits.title, project_traits.link, project_traits.description,
 				(SELECT ARRAY(SELECT skill FROM SKILLS WHERE id IN(  (SELECT UNNEST(skills)
-				FROM project_traits where id =${pid[0].id})))) AS skills, 
+				FROM project_traits where id =${pid[0].id})))) AS skills,
 				(SELECT ARRAY(SELECT interests FROM interests WHERE id IN(SELECT UNNEST(interests)
 				FROM project_traits where id =${pid[0].id}))AS interests)
 				FROM project_traits WHERE id=${pid[0].id};`;
@@ -209,6 +228,8 @@ app.get('/add_project', function(req, res) {
 	var link=req.query.link;
 	var user=req.query.user;
 	var psswd=req.query.password;
+	var check="Select * FROM user_details WHERE (name = '"+user+"' AND password ='"+psswd+"');";
+
 	res.render('userAdd',{
 		my_title:"Add a Project"
 	});
@@ -222,6 +243,7 @@ app.get('/add_project/submit', function(req, res) {
 	var linkIn=req.query.link;
 	var userIn=req.query.user;
 	var psswdIn=req.query.password;
+	var check="Select * FROM user_details WHERE (name = '"+userIn+"' AND password ='"+psswdIn+"');";
 	//var funs2 = require('./Scripts/userAdd.js');
 	if (!(titleIn=='' || descriptionIn=='' || skillsIn==undefined || interestsIn==undefined)){
 		//skillsIn.map(Number);
@@ -229,6 +251,7 @@ app.get('/add_project/submit', function(req, res) {
 		//console.log(titleIn,descriptionIn,skillsIn,interestsIn,linkIn);
 
 		var insert_statement = "INSERT INTO project_traits(title,description,skills,interests,link) VALUES('"+titleIn+"','"+descriptionIn+"','"+'{'+skillsIn+'}'+"','"+'{'+interestsIn+'}'+"','"+linkIn+"');";
+
 		db.any(insert_statement)
 	        .then(function (rows) {
 	            res.render('userAdd',{
@@ -243,6 +266,20 @@ app.get('/add_project/submit', function(req, res) {
 	                title: 'add_project',
 	            })
 	        })
+					db.any(check)
+						.then(function(rows) {
+							if (rows.length==1){
+								res.render('LandingPage',{
+									my_title:"SUCSESS!"
+							});
+							}
+							else{
+								res.render('userAdd',{
+								my_title:"Invalid Login"
+							});
+							}
+
+						})
 	}
 	else{
 		console.log("Invalid Submission Attempt, All Required Fields Must be Occupied");
