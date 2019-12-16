@@ -175,13 +175,13 @@ app.get('/search/results', function(req, res) {
 		WHERE description ILIKE '%${term}%'`;
 
 		var termInTitle = `SELECT id FROM project_traits
-		WHERE string_to_array(LOWER(${term}), ' ') <@ string_to_array(LOWER(title), ' ');`;
+		WHERE string_to_array(LOWER('${term}'), ' ') <@ string_to_array(LOWER(title), ' ');`;
 
 		var titleInTerm = `SELECT id FROM project_traits
-		WHERE string_to_array(LOWER(${term}), ' ') @> string_to_array(LOWER(title), ' ');`;
+		WHERE string_to_array(LOWER('${term}'), ' ') @> string_to_array(LOWER(title), ' ');`;
 
 		var termInDescription = `SELECT id FROM project_traits
-		WHERE string_to_array(LOWER(${term}), ' ') <@ string_to_array(LOWER(description), ' ');`;
+		WHERE string_to_array(LOWER('${term}'), ' ') <@ string_to_array(LOWER(description), ' ');`;
 	}
 
 	if(skills){
@@ -213,6 +213,9 @@ app.get('/search/results', function(req, res) {
 		if(term != ''){
 			taskArray.push(task.any(exactTitle));
 			taskArray.push(task.any(exactInDescription));
+			taskArray.push(task.any(termInTitle));
+			taskArray.push(task.any(titleInTerm));
+			taskArray.push(task.any(termInDescription));
 		}
 		if(skills){
 			taskArray.push(task.any(exactSkills));
