@@ -5,6 +5,8 @@ Related repos:
 Team meeting logs: https://github.com/John-Salame/Project-Source-Team-Logs
 Milestone Submissions: https://github.com/John-Salame/Project-Source-Milestone-Submissions
 
+Project Source is a website designed to allow users to find new and interesting coding projects.  Users can add new projects to the database and search by title, skills, or interests to find their next project idea.  The goal is to give new and experienced coders new ideas and projects to try.
+
 To use this code you will need:
 Node JS
 PostgreSQL
