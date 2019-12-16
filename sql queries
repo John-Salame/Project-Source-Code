@@ -55,7 +55,7 @@ WHERE ARRAYinterests @> interests;
 
 *********** SEARCH IS SUBSET OF TITLE ************
 SELECT id FROM project_traits
-WHERE ARRAYsearcharray <@ string_to_array(LOWER(title), ' ');
+WHERE string_to_array(lower(term), ' ') <@ string_to_array(LOWER(title), ' ');
 
 //search array will need parse and toLower first
 
